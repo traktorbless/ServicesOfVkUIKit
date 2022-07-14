@@ -12,22 +12,18 @@ class ViewController: UIViewController {
     
     var tableView = UITableView()
     
+    let refreshControl = UIRefreshControl()
+    
+    let cellIdentifire = "cell"
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
         loadData()
-        let tableView = UITableView(frame: view.bounds, style: .plain)
-        tableView.register(UITableViewCell.self, forCellReuseIdentifier: "cell")
-        tableView.delegate = self
-        tableView.dataSource = self
-        self.tableView = tableView
-
+        createTableView()
+        createRefereshControl()
         title = "VK сервисы"
-        
-        view.addSubview(tableView)
     }
-
-
 }
 
 
@@ -38,7 +34,7 @@ extension ViewController: UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
+        let cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifire, for: indexPath)
         let service = services[indexPath.row]
         
         var content = cell.defaultContentConfiguration()
@@ -59,7 +55,14 @@ extension ViewController: UITableViewDataSource {
         return cell
     }
     
-    
+    func createTableView() {
+        let tableView = UITableView(frame: view.bounds, style: .plain)
+        tableView.register(UITableViewCell.self, forCellReuseIdentifier: cellIdentifire)
+        tableView.delegate = self
+        tableView.dataSource = self
+        self.tableView = tableView
+        self.view.addSubview(tableView)
+    }
 }
 
 // MARK: UITableViewDelegate
@@ -105,3 +108,17 @@ extension ViewController {
     }
 }
 
+//MARK: Pull-to-refresh
+
+extension ViewController {
+    @objc func refresh(_ sender: AnyObject) {
+        loadData()
+        refreshControl.endRefreshing()
+    }
+    
+    func createRefereshControl() {
+        refreshControl.attributedTitle = NSAttributedString(string: "Обновляем")
+        refreshControl.addTarget(self, action: #selector(self.refresh(_:)), for: .allEvents)
+        tableView.addSubview(refreshControl)
+    }
+}
