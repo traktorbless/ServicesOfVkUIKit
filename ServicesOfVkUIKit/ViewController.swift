@@ -15,6 +15,7 @@ class ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        loadData()
         let tableView = UITableView(frame: view.bounds, style: .plain)
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: "cell")
         tableView.delegate = self
@@ -63,6 +64,34 @@ extension ViewController: UITableViewDataSource {
 
 // MARK: UITableViewDelegate
 extension ViewController: UITableViewDelegate {
-    
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 85
+    }
+}
+
+//MARK: Load data
+
+extension ViewController {
+    func loadData() {
+        guard let url = URL(string: "https://publicstorage.hb.bizmrg.com/sirius/result.json") else { return }
+        
+        URLSession.shared.dataTask(with: url) { data, _, error in
+            if let error = error {
+                print(error.localizedDescription)
+                return
+            }
+            
+            guard let data = data else { return }
+            
+            if let decodedResponse = try? JSONDecoder().decode(Response.self, from: data) {
+                self.services = decodedResponse.body.services
+                DispatchQueue.main.async {
+                    self.tableView.reloadData()
+                }
+            } else {
+                print("Invalid decode")
+            }
+        }.resume()
+    }
 }
 
