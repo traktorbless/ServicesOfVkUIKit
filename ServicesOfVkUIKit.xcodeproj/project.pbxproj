@@ -11,6 +11,7 @@
 		5D39F22E2880C99A00CAD87F /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D39F22D2880C99A00CAD87F /* SceneDelegate.swift */; };
 		5D39F2302880C99A00CAD87F /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D39F22F2880C99A00CAD87F /* ViewController.swift */; };
 		5D39F2352880C99C00CAD87F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 5D39F2342880C99C00CAD87F /* Assets.xcassets */; };
+		5D39F2402880CA5800CAD87F /* Services.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D39F23F2880CA5800CAD87F /* Services.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -20,6 +21,7 @@
 		5D39F22F2880C99A00CAD87F /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		5D39F2342880C99C00CAD87F /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		5D39F2392880C99C00CAD87F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		5D39F23F2880CA5800CAD87F /* Services.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Services.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -55,10 +57,19 @@
 				5D39F22B2880C99A00CAD87F /* AppDelegate.swift */,
 				5D39F22D2880C99A00CAD87F /* SceneDelegate.swift */,
 				5D39F22F2880C99A00CAD87F /* ViewController.swift */,
+				5D39F2412880CAA100CAD87F /* Model */,
 				5D39F2342880C99C00CAD87F /* Assets.xcassets */,
 				5D39F2392880C99C00CAD87F /* Info.plist */,
 			);
 			path = ServicesOfVkUIKit;
+			sourceTree = "<group>";
+		};
+		5D39F2412880CAA100CAD87F /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				5D39F23F2880CA5800CAD87F /* Services.swift */,
+			);
+			path = Model;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -131,6 +142,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				5D39F2302880C99A00CAD87F /* ViewController.swift in Sources */,
+				5D39F2402880CA5800CAD87F /* Services.swift in Sources */,
 				5D39F22C2880C99A00CAD87F /* AppDelegate.swift in Sources */,
 				5D39F22E2880C99A00CAD87F /* SceneDelegate.swift in Sources */,
 			);
