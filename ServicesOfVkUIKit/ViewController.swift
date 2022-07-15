@@ -1,14 +1,9 @@
-//
-//  ViewController.swift
-//  ServicesOfVkUIKit
-//
-//  Created by Антон Таранов on 15.07.2022.
-//
-
 import UIKit
 
 class ViewController: UIViewController {
     var services = [Service]()
+    
+    var icons = [UIImage?]()
     
     var tableView = UITableView()
     
@@ -40,22 +35,13 @@ extension ViewController: UITableViewDataSource {
         var content = cell.defaultContentConfiguration()
         content.text = service.name
         content.secondaryText = service.description
-        if let imageURL = service.getUrlOfImage {
-            if let imageData = try? Data(contentsOf: imageURL) {
-                let image = UIImage(data: imageData)
-                content.image = image
-            } else {
-                content.image = UIImage(systemName: "icloud.slash.fill")
-            }
-        } else {
-            content.image = UIImage(systemName: "icloud.slash.fill")
-        }
+        content.image = icons[indexPath.row]
         cell.contentConfiguration = content
         
         return cell
     }
     
-    func createTableView() {
+    private func createTableView() {
         let tableView = UITableView(frame: view.bounds, style: .plain)
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: cellIdentifire)
         tableView.delegate = self
@@ -85,7 +71,7 @@ extension ViewController: UITableViewDelegate {
 //MARK: Load data
 
 extension ViewController {
-    func loadData() {
+    private func loadData() {
         guard let url = URL(string: "https://publicstorage.hb.bizmrg.com/sirius/result.json") else { return }
         
         URLSession.shared.dataTask(with: url) { data, _, error in
@@ -98,6 +84,8 @@ extension ViewController {
             
             if let decodedResponse = try? JSONDecoder().decode(Response.self, from: data) {
                 self.services = decodedResponse.body.services
+                self.icons = self.loadIcon(for: self.services)
+                
                 DispatchQueue.main.async {
                     self.tableView.reloadData()
                 }
@@ -106,17 +94,36 @@ extension ViewController {
             }
         }.resume()
     }
+    
+    private func loadIcon(for services: [Service]) -> [UIImage?] {
+        var images = [UIImage?]()
+        
+        for service in services {
+            if let imageURL = service.getUrlOfImage {
+                if let imageData = try? Data(contentsOf: imageURL) {
+                    let image = UIImage(data: imageData)
+                    images.append(image)
+                } else {
+                    images.append(UIImage(systemName: "icloud.slash.fill"))
+                }
+            } else {
+                images.append(UIImage(systemName: "icloud.slash.fill"))
+            }
+        }
+        
+        return images
+    }
 }
 
 //MARK: Pull-to-refresh
 
 extension ViewController {
-    @objc func refresh(_ sender: AnyObject) {
+    @objc private func refresh(_ sender: AnyObject) {
         loadData()
         refreshControl.endRefreshing()
     }
     
-    func createRefereshControl() {
+    private func createRefereshControl() {
         refreshControl.attributedTitle = NSAttributedString(string: "Обновляем")
         refreshControl.addTarget(self, action: #selector(self.refresh(_:)), for: .allEvents)
         tableView.addSubview(refreshControl)
